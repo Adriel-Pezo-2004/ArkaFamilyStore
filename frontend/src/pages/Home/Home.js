@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
+import './Home.css';
 
 const Home = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -12,14 +14,19 @@ const Home = () => {
     if (term) {
       console.log('Navegando a búsqueda con término:', term);
       navigate(`/catalogo?search=${encodeURIComponent(term)}`);
+    } else {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Por favor ingrese un término de búsqueda!',
+      });
     }
   };
 
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-3xl font-bold mb-8">ARKA FAMILY STORE</h1>
-      
+    <div className="container mx-auto p-4">  
       <form onSubmit={handleSearchSubmit} className="max-w-md mx-auto">
+        <h1 className="text-3xl font-bold mb-8">ARKA FAMILY STORE</h1>
         <div className="flex gap-2">
           <input
             type="text"

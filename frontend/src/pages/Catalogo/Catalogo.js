@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
+import Swal from 'sweetalert2';
 
 const Catalogo = () => {
   const [results, setResults] = useState([]);
@@ -27,6 +28,13 @@ const Catalogo = () => {
         
         if (Array.isArray(response.data)) {
           setResults(response.data);
+          Swal.fire({
+            icon: 'info',
+            title: 'Resultados de la búsqueda',
+            text: `Total de productos encontrados: ${response.data.length}`,
+            timer: 3500,
+            timerProgressBar: true,
+          });
         } else {
           console.error('La respuesta no es un array:', response.data);
           setResults([]);
@@ -62,7 +70,9 @@ const Catalogo = () => {
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-2xl font-bold mb-4">Resultados de la búsqueda: {searchTerm}</h1>
-      
+      <div className="mt-4">
+        <p>Total de resultados: {results.length}</p>
+      </div>
       {results.length === 0 ? (
         <p>No se encontraron productos para "{searchTerm}"</p>
       ) : (
@@ -76,7 +86,6 @@ const Catalogo = () => {
                 src={product.imagen} 
                 alt={product.nombre}
                 className="w-full h-48 object-cover mb-4"
-               
               />
               <h2 className="text-xl font-semibold mb-2">{product.nombre}</h2>
               <p className="text-gray-600 mb-2">{product.descripcion}</p>
@@ -86,10 +95,6 @@ const Catalogo = () => {
           ))}
         </div>
       )}
-      
-      <div className="mt-4">
-        <p>Total de resultados: {results.length}</p>
-      </div>
     </div>
   );
 };
